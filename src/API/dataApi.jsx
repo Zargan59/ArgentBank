@@ -1,11 +1,9 @@
-import { login } from "../Redux/actions/action";
+import { login, changeName } from "../Redux/actions/action";
 import store from "../Redux/store/store";
 
 
 
 export async function GetUserToken(email,password,rememberMe, navigate){
-    console.log("le mail : ", email);
-    console.log("le mdp : ", password);
     try{
         const resp = await fetch('http://localhost:3001/api/v1/user/login',{
             method:"POST",
@@ -15,19 +13,20 @@ export async function GetUserToken(email,password,rememberMe, navigate){
         if(resp.ok){
             const data = await resp.json()
                 if(data.status===200){
-                    
+                    console.log(data);
                     const token = data.body.token
                     store.dispatch(login(token))
-                    navigate("/profile")
-
+                    store.dispatch(changeName(data.body.firstName, data.body.lastName))
+                    GetUserProfil(token)
                     if(rememberMe){
-                        let user ={
-                            email,
-                            password
-                        }
                         //Push dans le localstorage
-                        localStorage.setItem("user", JSON.stringify(user))
+                        localStorage.setItem("token", JSON.stringify(token))
+
                     }
+                    else{
+                        sessionStorage.setItem("token", JSON.stringify(token))
+                    }
+                    navigate("/profile")
                 }
         }
         else{
@@ -39,9 +38,10 @@ export async function GetUserToken(email,password,rememberMe, navigate){
     }
 }
 
-async function GoToProfil(token, navigate){
+
+export async function GetUserProfil(token){
     try{
-        const resp = await fetch ('http://localhost:3001/api/v1/user/login', {
+        const resp = await fetch ('http://localhost:3001/api/v1/user/profile', {
             method: "POST",
             headers:{
                 Authorization : `Bearer ${token}`
@@ -56,6 +56,7 @@ async function GoToProfil(token, navigate){
                 }
         }
         else{
+            console.log(resp.status);
             console.log("Y'a un problème");
         }
     }

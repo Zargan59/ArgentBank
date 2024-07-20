@@ -112,6 +112,42 @@ html {
     font-size: 0.9rem;
   }
   
+  .editModal_InputContent{
+    padding: 25px ;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  .editModal_InputContent input{
+    border-radius: 5px;
+    padding: 10px 5px ;
+    border: 2px solid lightgrey;
+    outline: none;
+  }
+  .editModal_InputContent input::placeholder{
+    font-weight: bold;
+    opacity: 0.3;
+  }
+  .editModal_buttonContent{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  .editModal_buttonContent button{
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    border:2px solid #00bc77;
+    color: #00bc77;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .editModal_buttonContent button:hover{
+    color: white;
+    background-color: #00bc77;
+  }
+
   @media (min-width: 920px) {
     .hero {
       height: 400px;

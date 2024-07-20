@@ -6,6 +6,9 @@ import { GetUserToken } from "../API/dataApi";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { login } from "../Redux/actions/action";
+
+import store from "../Redux/store/store";
 
 export default function SignIn() {
   const [username, SetUsername] = useState("");
@@ -29,15 +32,15 @@ export default function SignIn() {
     }
   };
 
-  //Fonction qui vérifie si le LS est vide
+  
   useEffect(()=>{
-    const isUserRemember = JSON.parse(localStorage.getItem("user"));
+    const isUserRemember = JSON.parse(localStorage.getItem("token"));
     //Si l'user est présent dans le LS
       //J'envoie ses infos dans sur
     if (isUserRemember) {
-      setPassword(isUserRemember.password)
-      SetUsername(isUserRemember.email)
-      setIsRemember(true)
+      const token = isUserRemember
+      store.dispatch(login(token))
+      navigate("/profile")
     }
   }, [])
 
@@ -46,7 +49,6 @@ export default function SignIn() {
       <Navbar />
       <main className="main bg-dark signUpPage">
         <section className="sign-in-content">
-          {/* <i className="fa fa-user-circle sign-in-icon"></i> */}
           <FontAwesomeIcon icon={faCircleUser} className="sign-in-icon" />
           <h1>Sign In</h1>
           <form>

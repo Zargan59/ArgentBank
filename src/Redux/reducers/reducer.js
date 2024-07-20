@@ -1,4 +1,4 @@
-import { LOGIN } from "../actions/action";
+import { LOGIN,CHANGENAME } from "../actions/action";
 const userInitialState = {
     isLoggedIn: false,
     firstName : "",
@@ -13,31 +13,34 @@ const userInitialState = {
 
 export default function userAuthReducer(state = userInitialState, action){
     switch(action.type){
-        case "LOGIN": {
+        case LOGIN: {
             return{
                 ...state,
                 token : action.token,
                 isLoggedIn : true,
             }
-                
-            
 
         }
+
         case "logout" :{
             return{
                 ...state
             }
         }
-        case "changeName":{
-
+        case CHANGENAME:{
+            return{
+                ...state, 
+                firstName : action.firstName,
+                lastName: action.lastName
+            }
         }
         case "rememberMe":{
             return{
                 remember: true
             }
         }
+        default : return state
     }
 }
 
-// http://localhost:3001/api/v1/user/signup'
 
