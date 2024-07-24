@@ -1,12 +1,8 @@
-import { LOGIN,CHANGENAME } from "../actions/action";
+import { LOGIN, CHANGENAME, LOGOUT } from "../actions/action";
 const userInitialState = {
-    isLoggedIn: false,
     firstName : "",
     lastName:"",
-    email:"",
-    password:"", 
-    token : "",
-    remember: false
+    token : ""
 }
 
 // export default function combineReducers(){}
@@ -16,13 +12,12 @@ export default function userAuthReducer(state = userInitialState, action){
         case LOGIN: {
             return{
                 ...state,
-                token : action.token,
-                isLoggedIn : true,
+                token : action.payload,
             }
 
         }
 
-        case "logout" :{
+        case LOGOUT :{
             return{
                 ...state
             }
@@ -30,8 +25,8 @@ export default function userAuthReducer(state = userInitialState, action){
         case CHANGENAME:{
             return{
                 ...state, 
-                firstName : action.firstName,
-                lastName: action.lastName
+                firstName : action.payload.firstName,
+                lastName: action.payload.lastName
             }
         }
         case "rememberMe":{

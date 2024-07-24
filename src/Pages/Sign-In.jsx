@@ -2,7 +2,7 @@ import Navbar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import FormSignUp from "../Components/Form/FormSignUp";
 import { useEffect, useState } from "react";
-import { GetUserToken } from "../API/dataApi";
+import { GetUserToken, GetUserProfil } from "../API/dataApi";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
@@ -25,13 +25,30 @@ export default function SignIn() {
   const handleRememberChange = (e) => {
     setIsRemember(e.target.checked);
   };
+
+  // const test = async () => {
+  //   const token = JSON.parse(sessionStorage.getItem("token"))
+  //   console.log(store.getState());
+  //   if(store.getState().token){
+  //     await GetUserProfil(token)
+  //   }
+  // }
+
   const SubmitUser = async (e) => {
     e.preventDefault();
+    //Si les 2 champs sont remplis, je vérifie qu'ils soient correctes
     if (username && password) {
-      GetUserToken(username, password, isRemember, navigate);
+      await GetUserToken(username, password, isRemember);
+    }
+    //Je récupère le token
+    const token = JSON.parse(sessionStorage.getItem("token"))
+    //Si le token est présent, je vais sur la page profile
+    if(token){
+      console.log("OUI");
+      navigate("/profile")
+
     }
   };
-
   
   useEffect(()=>{
     const isUserRemember = JSON.parse(localStorage.getItem("token"));

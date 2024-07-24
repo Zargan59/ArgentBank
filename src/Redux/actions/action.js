@@ -2,7 +2,7 @@ import { type } from "@testing-library/user-event/dist/type"
 
 export const  LOGIN = "LOGIN"
 export const CHANGENAME = "CHANGENAME"
-//exporte à partir d'ici toutes les fonctions qui vont pouvoir être fais par l'user
+export const LOGOUT = "LOGOUT"
 
 //Connexion réussis
 export const login = (token)=> {
@@ -20,9 +20,9 @@ export const changeName = (firstName, lastName) =>{
       payload :  {firstName, lastName}
    }
 }
-//Connexion échoué
 
-//En cours de connexion
+//RememberMe
+
 
 //Déconnexion
 export const logout = ()=>{

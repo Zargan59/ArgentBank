@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import Account from "./Account";
 import store from "../Redux/store/store";
 import { changeName } from "../Redux/actions/action";
-export default function UserInfo() {
+import { GetUserProfil, changeUserNames } from "../API/dataApi";
+
+export default function UserInfo({token}) {
   const [modal, setModal] = useState(false)
   const [changeFirstName, setChangeFirstName] = useState("")
   const [changeLastName, setChangeLastName] = useState("")
@@ -12,16 +13,21 @@ export default function UserInfo() {
   const handleChangeUserInfo = ()=>{
     setModal(true)
   }
+
   const handleCancel = ()=>{
     setModal(false)
   }
-  //Modifié les infos de l'user
-  const changeUserInfo = ()=>{
+  useEffect(()=>{
+    getUser()
+  },[setChangeFirstName,setChangeLastName])
 
-    store.dispatch(changeName(changeFirstName, changeLastName))
-    console.log(store.getState());
-
+  const getUser = async ()=>{
+    const token = JSON.parse(sessionStorage.getItem("token"))
+    await GetUserProfil(token)
+    setChangeFirstName(store.getState().firstName)
+    setChangeLastName(store.getState().lastName)
   }
+
 
   const handleChangeName = (e)=>{
     //Récupérer les éléments des inputs
@@ -35,9 +41,10 @@ export default function UserInfo() {
     
   }
   const handleValidChangeName = ()=>{
-    console.log(changeLastName);
-    console.log(changeFirstName);
-    changeUserInfo()
+    setModal(false)
+    store.dispatch(changeName(changeFirstName, changeLastName))
+    console.log(store.getState());
+    changeUserNames(token,changeFirstName, changeLastName)
   }
 ///Ajouter les informations de l'user dans le place holder et sur le message de bienvenue quand le store.getState sera opérationnel
   return (
@@ -47,8 +54,8 @@ export default function UserInfo() {
       <div> 
         <h1> Welcome back</h1>
         <div className="editModal_InputContent">
-          <input id="firstName" onChange={handleChangeName} type="text" placeholder="Tony" />
-          <input id="lastName" onChange={handleChangeName} type="text" placeholder="TEST" />
+          <input id="firstName" onChange={handleChangeName} type="text" placeholder={changeFirstName} />
+          <input id="lastName" onChange={handleChangeName} type="text" placeholder={changeLastName} />
         </div>
         <div className="editModal_buttonContent">
           <button onClick={handleValidChangeName}>Save</button>
@@ -59,7 +66,7 @@ export default function UserInfo() {
        :
 
        <div>
-         <h1> Welcome back <br /> Tony Jarvis!</h1>
+         <h1> Welcome back <br /> {changeFirstName} {changeLastName} !</h1>
          <button onClick={handleChangeUserInfo} className="edit-button">Edit Name</button>
       </div>
        }
