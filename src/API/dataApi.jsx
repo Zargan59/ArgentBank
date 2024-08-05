@@ -1,7 +1,5 @@
-import { login, changeName } from "../Redux/actions/action";
+import { changeName } from "../Redux/actions/action";
 import store from "../Redux/store/store";
-
-
 
 export async function GetUserToken(email,password,rememberMe){
     try{
@@ -30,8 +28,7 @@ export async function GetUserToken(email,password,rememberMe){
 export async function GetUserProfil(token){
     try{
         const resp = await fetch ('http://localhost:3001/api/v1/user/profile', {
-            method: "POST",
-            
+            method: "POST",   
             headers:{
                 'Content-Type': 'application/json',
                 Authorization : `Bearer ${token}`
@@ -45,11 +42,9 @@ export async function GetUserProfil(token){
             }   
     }
 }
-catch(error){
-    console.log(error);
-}
-
-   
+    catch(error){
+        console.log(error);
+    }
 }
 
 export async function changeUserNames(token, firstName, lastName){

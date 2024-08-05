@@ -3,13 +3,15 @@ import Account from "./Account";
 import store from "../Redux/store/store";
 import { changeName } from "../Redux/actions/action";
 import { GetUserProfil, changeUserNames } from "../API/dataApi";
+import { useSelector } from "react-redux";
 
 export default function UserInfo({token}) {
   const [modal, setModal] = useState(false)
   const [changeFirstName, setChangeFirstName] = useState("")
   const [changeLastName, setChangeLastName] = useState("")
 
-
+  const FirstName = useSelector((state)=>state.firstName);
+  const LastName = useSelector((state)=>state.lastName)
   const handleChangeUserInfo = ()=>{
     setModal(true)
   }
@@ -30,12 +32,10 @@ export default function UserInfo({token}) {
 
 
   const handleChangeName = (e)=>{
-    //Récupérer les éléments des inputs
     if(e.target.id === "firstName"){
       setChangeFirstName(e.target.value)
     }
     else if (e.target.id === "lastName"){
-      console.log("Le nom est changé");
       setChangeLastName(e.target.value)
     }
     
@@ -43,10 +43,8 @@ export default function UserInfo({token}) {
   const handleValidChangeName = ()=>{
     setModal(false)
     store.dispatch(changeName(changeFirstName, changeLastName))
-    console.log(store.getState());
     changeUserNames(token,changeFirstName, changeLastName)
   }
-///Ajouter les informations de l'user dans le place holder et sur le message de bienvenue quand le store.getState sera opérationnel
   return (
     <main className="main bg-dark">
      <div className="header">
@@ -54,8 +52,8 @@ export default function UserInfo({token}) {
       <div> 
         <h1> Welcome back</h1>
         <div className="editModal_InputContent">
-          <input id="firstName" onChange={handleChangeName} type="text" placeholder={changeFirstName} />
-          <input id="lastName" onChange={handleChangeName} type="text" placeholder={changeLastName} />
+          <input id="firstName" onChange={handleChangeName} type="text" placeholder={FirstName} />
+          <input id="lastName" onChange={handleChangeName} type="text" placeholder={LastName} />
         </div>
         <div className="editModal_buttonContent">
           <button onClick={handleValidChangeName}>Save</button>

@@ -11,10 +11,21 @@ import { login } from "../Redux/actions/action";
 import store from "../Redux/store/store";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
   const [username, SetUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isRemember, setIsRemember] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(()=>{
+    const isUserRemember = JSON.parse(localStorage.getItem("token"));
+    if (isUserRemember) {
+      sessionStorage.setItem("token", JSON.stringify(isUserRemember))
+      const token = isUserRemember
+      store.dispatch(login(token))
+      navigate("/profile")
+    }
+  }, [])
 
   const handleNameChange = (e) => {
     SetUsername(e.target.value);
@@ -26,13 +37,6 @@ export default function SignIn() {
     setIsRemember(e.target.checked);
   };
 
-  // const test = async () => {
-  //   const token = JSON.parse(sessionStorage.getItem("token"))
-  //   console.log(store.getState());
-  //   if(store.getState().token){
-  //     await GetUserProfil(token)
-  //   }
-  // }
 
   const SubmitUser = async (e) => {
     e.preventDefault();
@@ -44,22 +48,11 @@ export default function SignIn() {
     const token = JSON.parse(sessionStorage.getItem("token"))
     //Si le token est présent, je vais sur la page profile
     if(token){
-      console.log("OUI");
       navigate("/profile")
-
     }
   };
   
-  useEffect(()=>{
-    const isUserRemember = JSON.parse(localStorage.getItem("token"));
-    //Si l'user est présent dans le LS
-      //J'envoie ses infos dans sur
-    if (isUserRemember) {
-      const token = isUserRemember
-      store.dispatch(login(token))
-      navigate("/profile")
-    }
-  }, [])
+ 
 
   return (
     <div>

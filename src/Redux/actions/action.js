@@ -6,7 +6,6 @@ export const LOGOUT = "LOGOUT"
 
 //Connexion réussis
 export const login = (token)=> {
-
    return {
         type: "LOGIN",
         payload: token
@@ -20,9 +19,6 @@ export const changeName = (firstName, lastName) =>{
       payload :  {firstName, lastName}
    }
 }
-
-//RememberMe
-
 
 //Déconnexion
 export const logout = ()=>{

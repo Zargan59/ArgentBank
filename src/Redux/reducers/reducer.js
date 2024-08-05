@@ -5,8 +5,6 @@ const userInitialState = {
     token : ""
 }
 
-// export default function combineReducers(){}
-
 export default function userAuthReducer(state = userInitialState, action){
     switch(action.type){
         case LOGIN: {
@@ -14,9 +12,7 @@ export default function userAuthReducer(state = userInitialState, action){
                 ...state,
                 token : action.payload,
             }
-
         }
-
         case LOGOUT :{
             return{
                 ...state

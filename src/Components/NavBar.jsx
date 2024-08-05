@@ -6,23 +6,13 @@ import { logout } from "../Redux/actions/action";
 import store from "../Redux/store/store";
 import { useEffect, useState } from "react";
 import { GetUserProfil } from "../API/dataApi";
+import { useSelector } from "react-redux";
 
 
 
 export default function Navbar({origin}) {
-//Changer le Navbar si l'user est connecté
+const name= useSelector((state)=> state.firstName)
 
-const [userName, setUserName] = useState(store.getState().firstName)
-const searchUsername= async ()=>{
-  const token = JSON.parse(sessionStorage.getItem("token"))
-  await GetUserProfil(token)
-  console.log(store.getState());
-  setUserName(store.getState().firstName)
-}
-
-if(store.getState().firstName===""){
-  searchUsername()
-}
 
 if(origin) {
   const handleLogout= ()=>{
@@ -31,7 +21,7 @@ if(origin) {
   }
   return(
     <nav className="main-nav">
-      <NavLink className="main-nav-logo">
+      <NavLink to="/" className="main-nav-logo">
         <img
           className="main-nav-logo-image"
           src={logo}
@@ -42,7 +32,7 @@ if(origin) {
       <div>
         <NavLink to = "/profile" className="main-nav-item"  >
         <FontAwesomeIcon icon={faCircleUser} />
-          {userName}
+          {name}
         </NavLink>
         <NavLink to="/" className="main-nav-item" onClick={handleLogout}>
           <FontAwesomeIcon icon={faSignOut} />
