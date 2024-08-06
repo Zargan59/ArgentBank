@@ -17,6 +17,7 @@ const name= useSelector((state)=> state.firstName)
 if(origin) {
   const handleLogout= ()=>{
     localStorage.clear()
+    sessionStorage.clear()
     store.dispatch(logout)
   }
   return(
